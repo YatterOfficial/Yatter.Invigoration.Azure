@@ -4,4 +4,22 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="TActor\" />
+    <None Remove="TObject\" />
+    <None Remove="TResponse\" />
+    <None Remove="Yatter.Storage.Azure" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Yatter.Invigoration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TActor\" />
+    <Folder Include="TObject\" />
+    <Folder Include="TResponse\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Yatter.Invigoration" Version="0.1.4" />
+  </ItemGroup>
 </Project>
