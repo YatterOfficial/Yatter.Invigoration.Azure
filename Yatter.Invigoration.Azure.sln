@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yatter.Invigoration.Azure", "Yatter.Invigoration.Azure\Yatter.Invigoration.Azure.csproj", "{6D8A9BFD-327D-4C13-B19F-AB66B5B98820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D8A9BFD-327D-4C13-B19F-AB66B5B98820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8A9BFD-327D-4C13-B19F-AB66B5B98820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8A9BFD-327D-4C13-B19F-AB66B5B98820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8A9BFD-327D-4C13-B19F-AB66B5B98820}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F85A00F1-1CFB-4D3A-910F-8823D92D194B}
+	EndGlobalSection
+EndGlobal
