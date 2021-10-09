@@ -11,6 +11,9 @@ using Yatter.Storage.Azure;
 
 namespace Yatter.Invigoration.Azure.TActor
 {
+    /// <summary>
+    /// Checks to see if a UserName is available, invigorates a TOUsernameContainerPathFormatter, responds with a TRUserNameAvailability or TRFatalResponse
+    /// </summary>
     public class TAIsUserNameAvailableWithBlobPath : Yatter.Invigoration.ActionBase
     {
         public TAIsUserNameAvailableWithBlobPath()
@@ -78,14 +81,14 @@ namespace Yatter.Invigoration.Azure.TActor
                 else
                 {
                     IsSuccess = false;
-                    Message = $"TACheckUserNameAvailability failed with the following Message: [{acted.Message}]";
+                    Message = $"TAIsUserNameAvailableWithBlobPath failed with the following Message: [{acted.Message}]";
                     base.Response = new TRFatalResponse { Message = Message };
                 }
             }
             catch(Exception ex)
             {
                 IsSuccess = false;
-                Message = $"TACheckUserNameAvailability failed with the Exception: [{ex.Message}]";
+                Message = $"TAIsUserNameAvailableWithBlobPath failed with the Exception: [{ex.Message}]";
                 base.Response = new TRFatalResponse { Message = Message };
             }
 

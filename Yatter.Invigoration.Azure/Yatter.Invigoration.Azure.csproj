@@ -18,7 +18,7 @@
     <Folder Include="TResponse\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.3" />
+    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Yatter.Invigoration" Version="0.1.4" />
   </ItemGroup>
