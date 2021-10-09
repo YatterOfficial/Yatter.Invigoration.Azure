@@ -46,12 +46,12 @@ namespace Yatter.Invigoration.Azure.TActor
 
                     if (existsResponse.Exists)
                     {
-                        Message = $"The Blob exists in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
+                        Message = $"TACheckBlobExists reports that the Blob exists in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
                         base.Response = new TRBlobExists { Exists = true, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message  };
                     }
                     else
                     {
-                        Message = $"The Blob does not exist in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
+                        Message = $"TACheckBlobExists reports that the Blob does not exist in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
                         base.Response = new TRBlobExists { Exists = false, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message };
                     }
                 }
@@ -64,7 +64,7 @@ namespace Yatter.Invigoration.Azure.TActor
             }
             catch(Exception ex)
             {
-                Message = $"TACheckBlobExists failed with the following Exception Message: [{ex.Message}]";
+                Message = $"TACheckBlobExists failed with the following Exception: [{ex.Message}]";
                 base.Response = new TRFatalResponse { Message = Message };
             }
             base.AddToNestedResponse(this);

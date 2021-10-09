@@ -69,12 +69,12 @@ namespace Yatter.Invigoration.Azure.TActor
 
                     if (existsResponse.Exists)
                     {
-                        Message = $"UserName {TOUsernameContainerPathFormatter.UserName} is not available";
+                        Message = $"TAIsUserNameAvailableWithBlobPath reports that UserName {TOUsernameContainerPathFormatter.UserName} is not available";
                         base.Response = new TRUserNameAvailability { IsAvailable = false, UserName = TOUsernameContainerPathFormatter.UserName, Message = Message };
                     }
                     else
                     {
-                        Message = $"UserName {TOUsernameContainerPathFormatter.UserName} is available";
+                        Message = $"TAIsUserNameAvailableWithBlobPath reports that UserName {TOUsernameContainerPathFormatter.UserName} is available";
                         base.Response = new TRUserNameAvailability { IsAvailable = true, UserName = TOUsernameContainerPathFormatter.UserName, Message = Message };
                     }
                 }
