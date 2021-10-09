@@ -11,15 +11,21 @@
     <None Remove="Yatter.Storage.Azure" />
     <None Remove="Newtonsoft.Json" />
     <None Remove="Yatter.Invigoration" />
+    <None Remove="Models\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TActor\" />
     <Folder Include="TObject\" />
     <Folder Include="TResponse\" />
+    <Folder Include="Models\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.4" />
+    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Yatter.Invigoration" Version="0.1.4" />
+    <PackageReference Include="Yatter.Invigoration" Version="0.2.2" />
   </ItemGroup>
 </Project>

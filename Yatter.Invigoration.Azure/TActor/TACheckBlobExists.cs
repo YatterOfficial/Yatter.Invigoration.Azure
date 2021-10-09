@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yatter.Invigoration.Azure.TObject;
 using Yatter.Invigoration.Azure.TResponse;
+using Yatter.Invigoration.TResponse;
 using Yatter.Storage.Azure;
-using Yatter.Storage.Azure.Exceptions;
 
 namespace Yatter.Invigoration.Azure.TActor
 {
@@ -47,27 +47,27 @@ namespace Yatter.Invigoration.Azure.TActor
                     if (existsResponse.Exists)
                     {
                         Message = $"TACheckBlobExists reports that the Blob exists in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
-                        base.Response = new TRBlobExists { Exists = true, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message  };
+                        base.Response = new TRBlobExists { IsSuccess = IsSuccess, Exists = true, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message  };
                     }
                     else
                     {
                         Message = $"TACheckBlobExists reports that the Blob does not exist in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
-                        base.Response = new TRBlobExists { Exists = false, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message };
+                        base.Response = new TRBlobExists { IsSuccess = IsSuccess, Exists = false, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message };
                     }
                 }
                 else
                 {
                     IsSuccess = false;
                     Message = $"TACheckBlobExists failed with the following Message: [{response.Message}]";
-                    base.Response = new TRFatalResponse { Message = Message };
+                    base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
                 }
             }
             catch(Exception ex)
             {
+                IsSuccess = false;
                 Message = $"TACheckBlobExists failed with the following Exception: [{ex.Message}]";
-                base.Response = new TRFatalResponse { Message = Message };
+                base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
             }
-            base.AddToNestedResponse(this);
         }
     }
 }
