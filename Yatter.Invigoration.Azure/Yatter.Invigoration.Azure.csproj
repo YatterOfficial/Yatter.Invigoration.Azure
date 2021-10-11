@@ -25,9 +25,9 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.5" />
+    <PackageReference Include="Yatter.Storage.Azure" Version="0.0.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Yatter.Invigoration" Version="0.2.9" />
+    <PackageReference Include="Yatter.Invigoration" Version="0.3.0" />
     <PackageReference Include="Yatter.UI.ListBuilder.Serialization" Version="0.0.3" />
   </ItemGroup>
 </Project>

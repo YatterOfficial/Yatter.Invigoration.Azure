@@ -20,7 +20,6 @@ namespace Yatter.Invigoration.Azure.TActor
 
         public TOUsernameContainerPathFormatter TOUsernameContainerPathFormatter { get { return (TOUsernameContainerPathFormatter)base.Object; } }
 
-        public string StorageConnectionString { get; set; }
 
         public void AddTObject(TOUsernameContainerPathFormatter username)
         {
@@ -31,39 +30,10 @@ namespace Yatter.Invigoration.Azure.TActor
         {
             try
             {
-                /*  BUSINESS RULES
-                 *  
-                 *  User exists if Blob exists in [CONTAINER_NAME] container with formatted path '...{0}...' e.g. string.Format("users/username/{0}.json", [USERNAME])
-                 *  
-                 *  INVIGORATION PATTERN
-                 *  
-                 *  TACheckBlobExists acted = await Invigorator.ActAsync<TOBlobDescriptor, TACheckBlobExists>(inputs);
-                 *  
-                 *  TOBlobDescriptor has the following properties:
-                 *  
-                 *  1. ConnectionString
-                 *  2. ContainerName
-                 *  3. BlobPath
-                 *  
-                 * */
-
-                /*
-                    var inputs = new TACheckBlobExists()
-                                .AddTObjectToTActor(
-                                new TOBlobDescriptor
-                                {
-                                    ConnectionString = System.Environment.GetEnvironmentVariable("YATTER_STORAGE_CONNECTIONSTRING"),
-                                    ContainerName = TOUsernameContainerPathFormatter.Container,
-                                    BlobPath = string.Format(TOUsernameContainerPathFormatter.PathFormatter, TOUsernameContainerPathFormatter.UserName)
-                                });
-
-                    TACheckBlobExists acted = await Invigorator.ActAsync<TOBlobDescriptor, TACheckBlobExists>(inputs);
-                    */
-
                 IActor acted =
                     await new TOBlobDescriptor()
                     .AddConnectionString(System.Environment.GetEnvironmentVariable("YATTER_STORAGE_CONNECTIONSTRING"))
-                    .AddContainerName(TOUsernameContainerPathFormatter.Container)
+                    .AddContainerName(TOUsernameContainerPathFormatter.ContainerName)
                     .AddBlobPath(string.Format(TOUsernameContainerPathFormatter.PathFormatter, TOUsernameContainerPathFormatter.UserName))
                     .InvigorateAsync<TACheckBlobExists>();
 

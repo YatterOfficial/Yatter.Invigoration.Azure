@@ -6,7 +6,7 @@ namespace Yatter.Invigoration.Azure.TObject.TObject
         public string TObjectType { get; set; }
 
         public string UserName { get; set; }
-        public string Container { get; set; }
+        public string ContainerName { get; set; }
         public string PathFormatter { get; set; }
         public string ConnectionString { get; set; }
 
@@ -25,9 +25,9 @@ namespace Yatter.Invigoration.Azure.TObject.TObject
             return tObject;
         }
 
-        public static TOUsernameContainerPathFormatter AddContainer(this TOUsernameContainerPathFormatter tObject, string value)
+        public static TOUsernameContainerPathFormatter AddContainerName(this TOUsernameContainerPathFormatter tObject, string value)
         {
-            tObject.Container = value;
+            tObject.ContainerName = value;
 
             return tObject;
         }
