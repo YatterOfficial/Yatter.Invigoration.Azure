@@ -46,26 +46,26 @@ namespace Yatter.Invigoration.Azure.TActor
 
                     if (existsResponse.Exists)
                     {
-                        Message = $"TACheckBlobExists reports that the Blob exists in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
+                        Message = $"TACheckBlobExists reports that the Blob exists in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}' and has a Response type of {typeof(TRBlobExists)}";
                         base.Response = new TRBlobExists { IsSuccess = IsSuccess, Exists = true, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message  };
                     }
                     else
                     {
-                        Message = $"TACheckBlobExists reports that the Blob does not exist in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}'";
+                        Message = $"TACheckBlobExists reports that the Blob does not exist in the Container '{TOBlobDescriptor.ContainerName}' with the path '{TOBlobDescriptor.BlobPath}' and has a Response type of {typeof(TRBlobExists)}";
                         base.Response = new TRBlobExists { IsSuccess = IsSuccess, Exists = false, Container = TOBlobDescriptor.ContainerName, Path = TOBlobDescriptor.BlobPath, Message = Message };
                     }
                 }
                 else
                 {
                     IsSuccess = false;
-                    Message = $"TACheckBlobExists failed with the following Message: [{response.Message}]";
+                    Message = $"TACheckBlobExists failed with the following Message: [{response.Message}] and has a Response type of {typeof(TRFatalResponse)}";
                     base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
                 }
             }
             catch(Exception ex)
             {
                 IsSuccess = false;
-                Message = $"TACheckBlobExists failed with the following Exception: [{ex.Message}]";
+                Message = $"TACheckBlobExists failed with the following Exception: [{ex.Message}] and has a Response type of {typeof(TRFatalResponse)}";
                 base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
             }
         }

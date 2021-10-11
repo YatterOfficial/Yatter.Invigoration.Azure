@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Yatter.Invigoration.Azure.TObject;
 using Yatter.Invigoration.Azure.TObject.TObject;
 using Yatter.Invigoration.Azure.TResponse;
+using Yatter.Invigoration.Extensions;
 using Yatter.Invigoration.TResponse;
 
 namespace Yatter.Invigoration.Azure.TActor
@@ -46,16 +47,26 @@ namespace Yatter.Invigoration.Azure.TActor
                  *  
                  * */
 
-                var inputs = new TACheckBlobExists()
-                            .AddTObjectToTActor<TACheckBlobExists>(
-                            new TOBlobDescriptor
-                            {
-                                ConnectionString = System.Environment.GetEnvironmentVariable("YATTER_STORAGE_CONNECTIONSTRING"),
-                                ContainerName = TOUsernameContainerPathFormatter.Container,
-                                BlobPath = string.Format(TOUsernameContainerPathFormatter.PathFormatter, TOUsernameContainerPathFormatter.UserName)
-                            });
+                /*
+                    var inputs = new TACheckBlobExists()
+                                .AddTObjectToTActor(
+                                new TOBlobDescriptor
+                                {
+                                    ConnectionString = System.Environment.GetEnvironmentVariable("YATTER_STORAGE_CONNECTIONSTRING"),
+                                    ContainerName = TOUsernameContainerPathFormatter.Container,
+                                    BlobPath = string.Format(TOUsernameContainerPathFormatter.PathFormatter, TOUsernameContainerPathFormatter.UserName)
+                                });
 
-                TACheckBlobExists acted = await Invigorator.ActAsync<TOBlobDescriptor, TACheckBlobExists>(inputs);
+                    TACheckBlobExists acted = await Invigorator.ActAsync<TOBlobDescriptor, TACheckBlobExists>(inputs);
+                    */
+
+                IActor acted =
+                    await new TOBlobDescriptor()
+                    .AddConnectionString(System.Environment.GetEnvironmentVariable("YATTER_STORAGE_CONNECTIONSTRING"))
+                    .AddContainerName(TOUsernameContainerPathFormatter.Container)
+                    .AddBlobPath(string.Format(TOUsernameContainerPathFormatter.PathFormatter, TOUsernameContainerPathFormatter.UserName))
+                    .InvigorateAsync<TACheckBlobExists>();
+
                 AddChildToNestedResponse(acted.Result);
 
                 if (acted.IsSuccess)
@@ -66,26 +77,26 @@ namespace Yatter.Invigoration.Azure.TActor
 
                     if (existsResponse.Exists)
                     {
-                        Message = $"TAIsUserNameAvailableWithBlobPath reports that UserName {TOUsernameContainerPathFormatter.UserName} is not available";
+                        Message = $"TAIsUserNameAvailableWithBlobPath reports that UserName {TOUsernameContainerPathFormatter.UserName} is not available and has a Response type of {typeof(TRUserNameAvailability)}";
                         base.Response = new TRUserNameAvailability { IsSuccess = IsSuccess, IsAvailable = false, UserName = TOUsernameContainerPathFormatter.UserName, Message = Message };
                     }
                     else
                     {
-                        Message = $"TAIsUserNameAvailableWithBlobPath reports that UserName {TOUsernameContainerPathFormatter.UserName} is available";
+                        Message = $"TAIsUserNameAvailableWithBlobPath reports that UserName {TOUsernameContainerPathFormatter.UserName} is available and has a Response type of {typeof(TRUserNameAvailability)}";
                         base.Response = new TRUserNameAvailability { IsSuccess = IsSuccess, IsAvailable = IsSuccess, UserName = TOUsernameContainerPathFormatter.UserName, Message = Message };
                     }
                 }
                 else
                 {
                     IsSuccess = false;
-                    Message = $"TAIsUserNameAvailableWithBlobPath failed with the following Message: [{acted.Message}]";
+                    Message = $"TAIsUserNameAvailableWithBlobPath failed with the following Message: [{acted.Message}] and has a Response type of {typeof(TRFatalResponse)}";
                     base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
                 }
             }
             catch(Exception ex)
             {
                 IsSuccess = false;
-                Message = $"TAIsUserNameAvailableWithBlobPath failed with the Exception: [{ex.Message}]";
+                Message = $"TAIsUserNameAvailableWithBlobPath failed with the Exception: [{ex.Message}] and has a Response type of {typeof(TRFatalResponse)}";
                 base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
             }
         }

@@ -14,6 +14,7 @@
     <None Remove="Models\" />
     <None Remove="Exceptions\" />
     <None Remove="Helpers\" />
+    <None Remove="Yatter.UI.ListBuilder.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TActor\" />
@@ -26,6 +27,7 @@
   <ItemGroup>
     <PackageReference Include="Yatter.Storage.Azure" Version="0.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Yatter.Invigoration" Version="0.2.2" />
+    <PackageReference Include="Yatter.Invigoration" Version="0.2.9" />
+    <PackageReference Include="Yatter.UI.ListBuilder.Serialization" Version="0.0.3" />
   </ItemGroup>
 </Project>

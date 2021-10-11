@@ -35,14 +35,20 @@ namespace Yatter.Invigoration.Azure.TActor
 
                 IsSuccess = blobResponse.IsSuccess;
 
-                Message = blobResponse.Message;
-
+                if (IsSuccess)
+                {
+                    Message = $"{GetType().ToString()} reports that Yatter.Storage.Azure.ResponsiveBlobManager succesfully uploaded to '{TOWriteTextToBlobSettings.BlobPath}' with the response message message [" + blobResponse.Message + $"] and has a response type of {typeof(TRWriteBlobResponse)}";
+                }
+                else
+                {
+                    Message = $"{GetType().ToString()} reports that Yatter.Storage.Azure.ResponsiveBlobManager failed to uploaded to '{TOWriteTextToBlobSettings.BlobPath}' with the response message message [" + blobResponse.Message + $"] and has a response type of {typeof(TRWriteBlobResponse)}";
+                }
                 base.Response = new TRWriteBlobResponse { IsSuccess = IsSuccess, Message = Message };
             }
             catch (Exception ex)
             {
                 IsSuccess = false;
-                Message = $"{GetType().ToString()} failed with the Exception: [{ex.Message}]";
+                Message = $"{GetType().ToString()} failed with the Exception: [{ex.Message}]" + $" and has a response type of {typeof(TRFatalResponse)}";
                 base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
             }
         }

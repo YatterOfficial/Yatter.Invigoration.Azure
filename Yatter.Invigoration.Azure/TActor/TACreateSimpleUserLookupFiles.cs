@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yatter.Invigoration.Azure.TObject;
 using Yatter.Invigoration.Azure.TResponse;
 using Yatter.Invigoration.Exceptions;
+using Yatter.Invigoration.Extensions;
 using Yatter.Invigoration.TResponse;
 
 namespace Yatter.Invigoration.Azure.TActor
@@ -32,71 +34,44 @@ namespace Yatter.Invigoration.Azure.TActor
                 var connectionString = System.Environment.GetEnvironmentVariable("YATTER_STORAGE_CONNECTIONSTRING");
                 var containerName = "contranslation";
 
-                #region Write SimpleUserNameFile
-                var writeUserNameFile =
-                    await WriteBlob(connectionString,
-                                    containerName,
-                                    TOCreateSimpleUserLookupFilesSettings.UserFilePath,
-                                    JsonConvert.SerializeObject(TOCreateSimpleUserLookupFilesSettings.SimpleUserNameFileContent, Formatting.Indented));
+                var tObjects = new List<TOWriteTextToBlobSettings>();
+                tObjects.Add(new TOWriteTextToBlobSettings()
+                            .AddBlobPath(TOCreateSimpleUserLookupFilesSettings.UserFilePath)
+                            .AddConnectionString(connectionString)
+                            .AddContainerName(containerName)
+                            .AddContent(JsonConvert.SerializeObject(TOCreateSimpleUserLookupFilesSettings.SimpleUserNameFileContent, Formatting.Indented)));
+                tObjects.Add(new TOWriteTextToBlobSettings()
+                            .AddBlobPath(TOCreateSimpleUserLookupFilesSettings.UserGuidFilePath)
+                            .AddConnectionString(connectionString)
+                            .AddContainerName(containerName)
+                            .AddContent(JsonConvert.SerializeObject(TOCreateSimpleUserLookupFilesSettings.SimpleUserGuidFileContent, Formatting.Indented)));
 
-                AddChildToNestedResponse(writeUserNameFile.Result);
-
-                IsSuccess = writeUserNameFile.IsSuccess;
-                Message = writeUserNameFile.Message;
-
-                if (!IsSuccess)
+                foreach(var tObject in tObjects)
                 {
-                    base.Response = new TACreateSimpleUserLookupFilesResponse { IsSuccess = IsSuccess, Message = $"{GetType().ToString()} reports that it failed to write the UserNameFile {TOCreateSimpleUserLookupFilesSettings.UserFilePath} to the {containerName} Container, with TAWriteTextToBlob reporting [IsSuccess={writeUserNameFile.IsSuccess} with the Message {writeUserNameFile.Message}.]" };
+                    IActor acted = await tObject.InvigorateAsync<TAWriteTextToBlob>();
 
-                    return;
-                }
-                #endregion
+                    IsSuccess = acted.IsSuccess;
+                    Message = acted.Message;
 
-                #region Write SimpleUserGuidFile
-                var writeUserGuidFile =
-                    await WriteBlob(connectionString,
-                                    containerName,
-                                    TOCreateSimpleUserLookupFilesSettings.UserGuidFilePath,
-                                    JsonConvert.SerializeObject(TOCreateSimpleUserLookupFilesSettings.SimpleUserGuidFileContent, Formatting.Indented));
+                    if (!IsSuccess)
+                    {
+                        base.Response = new TRCreateSimpleUserLookupFilesResponse { IsSuccess = IsSuccess, Message = $"{GetType().ToString()} reports that it failed to write the file {tObject.BlobPath} to the {containerName} Container, with TAWriteTextToBlob reporting IsSuccess={IsSuccess} with the Message [{Message}] and has a Response type of {typeof(TRCreateSimpleUserLookupFilesResponse)}." };
 
-                AddChildToNestedResponse(writeUserGuidFile.Result);
+                        return;
+                    }
 
-                IsSuccess = writeUserGuidFile.IsSuccess;
-                Message = writeUserGuidFile.Message;
-
-                if (!IsSuccess)
-                {
-                    base.Response = new TACreateSimpleUserLookupFilesResponse { IsSuccess = IsSuccess, Message = $"{GetType().ToString()} reports that it failed to write the UserNameFile {TOCreateSimpleUserLookupFilesSettings.UserFilePath} to the {containerName} Container, with TAWriteTextToBlob reporting [IsSuccess={writeUserNameFile.IsSuccess} with the Message {writeUserNameFile.Message}.]" };
-
-                    return;
                 }
 
-                #endregion
+                Message = $"{GetType().ToString()} reports that it has succesfully created the Simple User Lookup Files ({TOCreateSimpleUserLookupFilesSettings.UserFilePath} and {TOCreateSimpleUserLookupFilesSettings.UserGuidFilePath}) for UserName {TOCreateSimpleUserLookupFilesSettings.UserName} with UserGuid {TOCreateSimpleUserLookupFilesSettings.UserGuid} and UserRootGuid {TOCreateSimpleUserLookupFilesSettings.UserRootGuid}, reporting IsSuccess={IsSuccess} with the Message [{Message}] and has a Response type of {typeof(TRCreateSimpleUserLookupFilesResponse)}";
 
-                Message = $"{GetType().ToString()} reports that it has succesfully created the Simple User Lookup Files ({TOCreateSimpleUserLookupFilesSettings.UserFilePath} and {TOCreateSimpleUserLookupFilesSettings.UserGuidFilePath}) for UserName {TOCreateSimpleUserLookupFilesSettings.UserName}";
-
-                base.Response = new TACreateSimpleUserLookupFilesResponse { IsSuccess = IsSuccess, Message = Message };
+                base.Response = new TRCreateSimpleUserLookupFilesResponse { IsSuccess = IsSuccess, Message = Message, UserName = TOCreateSimpleUserLookupFilesSettings.UserName, UserGuid = TOCreateSimpleUserLookupFilesSettings.UserGuid, UserRootGuid = TOCreateSimpleUserLookupFilesSettings.UserRootGuid };
             }
             catch (Exception ex)
             {
                 IsSuccess = false;
-                Message = $"{GetType().ToString()} failed with the Exception: [{ex.Message}]";
+                Message = $"{GetType().ToString()} failed with the Exception: [{ex.Message}] and has a Response type of {typeof(TRFatalResponse)}";
                 base.Response = new TRFatalResponse { IsSuccess = IsSuccess, Message = Message };
             }
-        }
-
-        private static async Task<TAWriteTextToBlob> WriteBlob(string connectionString, string containerName, string blobPath, string content)
-        {
-            return await Invigorator.ActAsync<TOWriteTextToBlobSettings, TAWriteTextToBlob>(
-                                        new TAWriteTextToBlob()
-                                        .AddTObjectToTActor(
-                                        new TOWriteTextToBlobSettings
-                                        {
-                                            ConnectionString = connectionString,
-                                            ContainerName = containerName,
-                                            BlobPath = blobPath,
-                                            Content = content
-                                        }));
         }
 
         public override void Dispose()

@@ -15,5 +15,37 @@ namespace Yatter.Invigoration.Azure.TObject
             TObjectType = GetType().ToString();
         }
     }
+
+    public static class TOWriteTextToBlobSettingsExtensions
+    {
+        public static TOWriteTextToBlobSettings AddConnectionString(this TOWriteTextToBlobSettings tObject, string value)
+        {
+            tObject.ConnectionString = value;
+
+            return tObject;
+        }
+
+        public static TOWriteTextToBlobSettings AddContainerName(this TOWriteTextToBlobSettings tObject, string value)
+        {
+            tObject.ContainerName = value;
+
+            return tObject;
+        }
+
+        public static TOWriteTextToBlobSettings AddBlobPath(this TOWriteTextToBlobSettings tObject, string value)
+        {
+            tObject.BlobPath = value;
+
+            return tObject;
+        }
+
+        public static TOWriteTextToBlobSettings AddContent(this TOWriteTextToBlobSettings tObject, string value)
+        {
+            tObject.Content = value;
+
+            return tObject;
+        }
+    }
 }
+
 
